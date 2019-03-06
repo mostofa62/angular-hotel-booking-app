@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Angular JS</title>
+
+
+<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"/>
+<link rel="stylesheet" href="node_modules/bootstrap-daterangepicker/daterangepicker.css"/>
+<link rel="stylesheet" href="js/libs/fullcalendar/dist/fullcalendar.min.css"/>
+
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/angular/angular.min.js"></script>
+<script src="node_modules/moment/moment.js"></script>
+<script src="node_modules/bootstrap-daterangepicker/daterangepicker.js">	
+</script>
+<script src="node_modules/angular-daterangepicker/js/angular-daterangepicker.js"></script>
+
+<script src="js/libs/fullcalendar/dist/fullcalendar.min.js"></script>
+
+<script src="js/app.js"></script>
+
+<script type="text/javascript">
+$(function() {	
+
+// $('#calendar').fullCalendar({
+// 	defaultView: 'month',  
+//     handleWindowResize: true,   
+     
+//     header: {
+//         //left: 'prev,next today',
+//         left:'title',
+//         //center: 'title',
+//         //right: 'month,agendaWeek,agendaDay'
+//         right:'prev,next today'
+//     },
+// });
+
+});
+</script>
+
+</head>
+<body>
+
+<div class="container" ng-app="BookingSearchApp">
+
+<div class="row">
+		<div class="col-md-12">
+			<h1>
+					Hotel Commerce Booking Panel
+			</h1>
+			<hr/>
+		</div>
+</div>
+
+
+<div class="row" ng-controller="SearchBooking">	
+<!-- search form -->
+<div class="col-md-3">
+
+
+
+<form ng-submit="submit()">
+
+
+
+<div class="form-group">	
+	<label for="dateSimple" class="control-label">From - To</label>	
+	<input date-range-picker class="form-control date-picker" type="text" ng-model="datePicker.date" options="datePicker.options" ng-required="true" />
+</div>
+
+<div class="form-group">	
+	<label for="dateSimple" class="control-label">Room Type</label>	
+	<select class="form-control" ng-options="roomType as roomType.name for roomType in roomTypes track by roomType.id" ng-model="selectedRoom" >
+	<option value="">-- Select Room Type --</option>	
+	</select>
+</div>
+
+<div class="form-group">
+	<input type="submit" class="btn btn-info" id="submit" value="Search" />
+</div>
+
+</form>
+
+
+<table ng-show="numberOfDay && selectedRoom" class="table table-bordered">
+	<tr>
+		<th>Total days: </th>
+		<td>
+			<span class="label label-success"> {{numberOfDay}}</span>
+		</td>
+	</tr>
+	<tr>
+		<th>Room type: </th>
+		<td>
+			<span class="label label-success"> {{selectedRoom.name}}</span>
+		</td>
+	</tr>
+
+</table>
+
+</div>
+<!-- calender form -->
+<div class="col-md-6">
+<div id='calendar'></div>
+</div>
+<!-- calender form -->
+<div class="col-md-3">
+	Available room segment
+</div>
+
+
+</div>
+
+</div>
+
+
+
+</body>
+</html>
