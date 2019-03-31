@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Features Selection</title>
+
+
+<link rel="stylesheet" href="node_modules/bootstrap/dist/css/bootstrap.css"/>
+
+
+
+<script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
+<script src="node_modules/angular/angular.min.js"></script>
+
+<script src="node_modules/checklist-model/checklist-model.js"></script>
+
+
+<script>
+
+
+var App = angular.module('HotelFeature', ['checklist-model']);
+var appEndPoint = "http://localhost:8080/api/";	
+
+//service
+//hotel service
+App.factory('FeatureDataService', function($http) {
+  return ({
+    hotelFeatures: function(id) {
+      return $http.get(appEndPoint+'features/'+id);  //1. this returns promise
+    },
+
+    allFeatures: function() {
+    	
+    	return $http.get(appEndPoint+'features');
+    },
+	
+	selectedFeatures:function(id, data){
+		
+		return $http({
+			method : "POST",
+			url : appEndPoint+'features/'+id,
+			data : angular.toJson(data),
+			headers : {
+				'Content-Type' : 'application/json'
+			}
+		});
+	}
+
+  });
+});
+
+
+App.controller('MainController', function($scope, FeatureDataService) {
+  
+  $scope.roles = [
+    {id: 1, text: 'guest'},
+    {id: 2, text: 'user'},
+    {id: 3, text: 'customer'},
+    {id: 4, text: 'admin'}
+  ];
+  $scope.user = {
+    roles: [$scope.roles[2]]
+  };
+  
+  FeatureDataService.allFeatures().then(function(d) {
+		//console.log(d.data);
+		$scope.roles = d.data;
+    	
+  });
+  
+  
+  FeatureDataService.hotelFeatures(2).then(function(d) { 
+    	//console.log(d.data);
+    	$scope.user = {
+			roles: d.data
+		};
+  });
+  
+  $scope.selectionChanged = function(){
+    $scope.selectedValues = $scope.user.roles.join(',');
+  }
+  
+  $scope.selectedValue = function(){
+	$scope.submitValues = $scope.user.roles.join(',');
+	
+	FeatureDataService.selectedFeatures(2, $scope.user.roles).then(function(d) {
+		console.log(d.data);
+		
+    	
+	});
+	
+	
+  }
+  
+  
+
+});
+
+
+</script>
+
+</head>
+<body ng-app="HotelFeature">
+
+<div class="container" ng-controller="MainController">
+
+<div class="row">
+		<div class="col-md-6 col-md-offset-3">
+			<h2>{{selectedValues}}</h2>
+			<h3>{{submitValues}}</h3>
+			<span ng-repeat="role in roles">
+				<input type="checkbox" checklist-change="selectionChanged()" data-checklist-model="user.roles" data-checklist-value="role.id">{{role.id}}-{{role.name}}
+			</span>
+			
+			
+		</div>
+</div>
+
+<div class="row">
+	<div class="col-md-6 col-md-offset-3">
+		<button ng-click="selectedValue()">Save Selection</button>
+	</div>
+</div>
+
+</div>
+
+</body>
+</html>

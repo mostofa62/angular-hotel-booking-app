@@ -10,6 +10,7 @@
 <link rel="stylesheet" href="js/libs/fullcalendar/dist/fullcalendar.min.css"/>
 
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
+<script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
 <script src="node_modules/angular/angular.min.js"></script>
 <script src="node_modules/moment/moment.js"></script>
 <script src="node_modules/bootstrap-daterangepicker/daterangepicker.js">	
@@ -20,29 +21,29 @@
 
 <script src="js/app.js"></script>
 
-<script type="text/javascript">
-$(function() {	
+<!-- <script type="text/javascript">
+// $(function() {	
 
-// $('#calendar').fullCalendar({
-// 	defaultView: 'month',  
-//     handleWindowResize: true,   
+// // $('#calendar').fullCalendar({
+// // 	defaultView: 'month',  
+// //     handleWindowResize: true,   
      
-//     header: {
-//         //left: 'prev,next today',
-//         left:'title',
-//         //center: 'title',
-//         //right: 'month,agendaWeek,agendaDay'
-//         right:'prev,next today'
-//     },
-// });
+// //     header: {
+// //         //left: 'prev,next today',
+// //         left:'title',
+// //         //center: 'title',
+// //         //right: 'month,agendaWeek,agendaDay'
+// //         right:'prev,next today'
+// //     },
+// // });
 
-});
-</script>
+// });
+</script> -->
 
 </head>
-<body>
+<body ng-app="BookingSearchApp">
 
-<div class="container" ng-app="BookingSearchApp">
+<div class="container" ng-controller="SearchBooking">
 
 <div class="row">
 		<div class="col-md-12">
@@ -54,7 +55,7 @@ $(function() {
 </div>
 
 
-<div class="row" ng-controller="SearchBooking">	
+<div class="row" >	
 <!-- search form -->
 <div class="col-md-3">
 
@@ -110,11 +111,52 @@ $(function() {
 </div>
 
 
+
+
+</div>
+
+
+
+
+<!-- All Rooms in a Tab -->
+<div class="row">
+<div class="col-md-12">
+
+
+  
+  <ul class="nav nav-tabs">
+  	<li class="nav-item" ng-repeat="rtype in allRoomAndType">        
+        <a ng-class="{active: $index == 0}" href="#tab{{$index + 1}}" data-toggle="tab" class="nav-link">{{ rtype.name }}</a>
+    </li>
+  </ul>
+  <div class="tab-content p-3">
+  	<div class="tab-pane" id="tab{{$index + 1}}" ng-repeat="rtype in allRoomAndType" ng-class="{active: $index == 0}">
+
+  		<ul>
+  			<li ng-repeat="r in rtype.rooms">
+  				{{r.name}}
+  			</li>
+  		</ul>
+
+
+
+  	</div>
+  </div>
+
+  
+
+
+
+
 </div>
 
 </div>
+<!-- end all Rooms in a Tab -->
 
 
+
+
+</div>
 
 </body>
 </html>
