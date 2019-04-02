@@ -11,17 +11,13 @@
 
 <script src="node_modules/jquery/dist/jquery.min.js"></script>
 <script src="node_modules/bootstrap/dist/js/bootstrap.min.js"></script>
-<script src="node_modules/angular/angular.min.js"></script>
-
-<script src="node_modules/checklist-model/checklist-model.js"></script>
-
 
 <script>
 
-
+/*
 var App = angular.module('HotelFeature', ['checklist-model']);
 var appEndPoint = "http://localhost:8080/api/";	
-
+/*
 //service
 //hotel service
 App.factory('FeatureDataService', function($http) {
@@ -49,8 +45,8 @@ App.factory('FeatureDataService', function($http) {
 
   });
 });
-
-
+*/
+/*
 App.controller('MainController', function($scope, FeatureDataService) {
   
   $scope.roles = [
@@ -69,8 +65,8 @@ App.controller('MainController', function($scope, FeatureDataService) {
     	
   });
   
-  
-  FeatureDataService.hotelFeatures(2).then(function(d) { 
+  var hotelId = 1;
+  FeatureDataService.hotelFeatures(hotelId).then(function(d) { 
     	//console.log(d.data);
     	$scope.user = {
 			roles: d.data
@@ -84,7 +80,7 @@ App.controller('MainController', function($scope, FeatureDataService) {
   $scope.selectedValue = function(){
 	$scope.submitValues = $scope.user.roles.join(',');
 	
-	FeatureDataService.selectedFeatures(2, $scope.user.roles).then(function(d) {
+	FeatureDataService.selectedFeatures(hotelId, $scope.user.roles).then(function(d) {
 		console.log(d.data);
 		
     	
@@ -97,21 +93,26 @@ App.controller('MainController', function($scope, FeatureDataService) {
 
 });
 
-
+*/
 </script>
 
 </head>
-<body ng-app="HotelFeature">
-
+<body>
+<div ng-app="HotelFeature">
 <div class="container" ng-controller="MainController">
 
 <div class="row">
 		<div class="col-md-6 col-md-offset-3">
 			<h2>{{selectedValues}}</h2>
 			<h3>{{submitValues}}</h3>
-			<span ng-repeat="role in roles">
-				<input type="checkbox" checklist-change="selectionChanged()" data-checklist-model="user.roles" data-checklist-value="role.id">{{role.id}}-{{role.name}}
-			</span>
+			
+				<div ng-repeat="role in roles"  class="form-check form-check-inline">
+				<input class="form-check-input" type="checkbox" checklist-change="selectionChanged()" data-checklist-model="user.roles" data-checklist-value="role.id">
+				<label class="form-check-label" for="{{role.id}}">
+					{{role.id}}-{{role.name}}
+				</label>
+				</div>
+			
 			
 			
 		</div>
@@ -123,7 +124,17 @@ App.controller('MainController', function($scope, FeatureDataService) {
 	</div>
 </div>
 
+
+
+
+
 </div>
+</div>
+<script src="node_modules/angular/angular.min.js"></script>
+
+<script src="node_modules/checklist-model/checklist-model.js"></script>
+<script src="js/featureapp.js"></script>
+<script src="js/services.js"></script>
 
 </body>
 </html>
